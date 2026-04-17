@@ -1,0 +1,11 @@
+conda install ffmpeg -c conda-forge
+
+conda install ffmpeg=7.1.1 -c conda-forge
+
+pip install lerobot
+
+conda install matplotlib
+
+# conda install pytorch torchvision torchaudio -c pytorch
+
+conda install conda-forge::pytorch

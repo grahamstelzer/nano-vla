@@ -448,7 +448,12 @@ def main():
     finally:
 
         # functionality to return so101 to resting position:
-        # should be {'shoulder_pan.pos': 1.4575186633487363, 'shoulder_lift.pos': -99.75619666802113, 'elbow_flex.pos': 97.13261648745518, 'wrist_flex.pos': 72.54736842105262, 'wrist_roll.pos': -3.003663003663007, 'gripper.pos': 3.2860824742268044, 
+        # should be {'shoulder_pan.pos': 1.4575186633487363, 
+        #            'shoulder_lift.pos': -99.75619666802113, 
+        #            'elbow_flex.pos': 97.13261648745518, 
+        #            'wrist_flex.pos': 72.54736842105262, 
+        #            'wrist_roll.pos': -3.003663003663007, 
+        #            'gripper.pos': 3.2860824742268044, 
         rest_position = {
             "shoulder_pan.pos":  1.4,    # replace with your actual rest values
             "shoulder_lift.pos": -99.0,

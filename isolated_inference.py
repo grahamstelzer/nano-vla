@@ -66,7 +66,7 @@ from pathlib import Path
 USE_AUTOCAST = False
 
 POLICY_PATH  = "grahamwichhh/v3_smolvla_so101-pick-up-lego"
-DATASET_PATH = "grahamwichhh/eval_v2_so101_lego-to-mug_50ep"   # training dataset, ONLY needed for feature shapes + norm stats
+DATASET_PATH = "grahamwichhh/v3_so101-pick-up-lego"   # training dataset, ONLY needed for feature shapes + norm stats
 # ROBOT_NAME = "ryan_gosling" # redundant
 TASK         = "Grab the cube"              # natural language prompt passed to the VLA model
 DEVICE       = "cuda"                       # "cuda", "mps", or "cpu"
@@ -78,7 +78,7 @@ RENAME_MAP = {}
 # camera ports senmt to OpenCVCameraConfig require Path objects:
 CAMERA_VIDEO_1 = Path("/dev/video12")
 CAMERA_VIDEO_2 = Path("/dev/video6")
-CAMERA_VIDEO_13 = Path("/dev/video0")
+CAMERA_VIDEO_3 = Path("/dev/video0")
 
 ROBOT_CONFIG = so_follower.SO101FollowerConfig(
     port="/dev/ttyACM1",
@@ -93,6 +93,12 @@ ROBOT_CONFIG = so_follower.SO101FollowerConfig(
         ),
         "camera2": OpenCVCameraConfig(
             index_or_path=CAMERA_VIDEO_2,
+            width=640,
+            height=480,
+            fps=30,
+        ),
+        "camera3": OpenCVCameraConfig(
+            index_or_path=CAMERA_VIDEO_3,
             width=640,
             height=480,
             fps=30,
@@ -245,6 +251,7 @@ def run_inference(robot, policy, policy_cfg, preprocessor, postprocessor, task, 
     robot_to_policy_key_map = {
         "camera1": "observation.images.camera1",
         "camera2": "observation.images.camera2",
+        "camera3": "observation.images.camera3",
         # add camera3 here if/when you have a third camera connected
     }
 
@@ -322,6 +329,8 @@ def run_inference(robot, policy, policy_cfg, preprocessor, postprocessor, task, 
             task=task,
             robot_type=robot.robot_type,
         )
+
+
         t3 = time.perf_counter() # check how long it takes to prediction the action
 
         # must convert it to "action_processed_policy" via make_robot_action using dataset as well
@@ -448,12 +457,7 @@ def main():
     finally:
 
         # functionality to return so101 to resting position:
-        # should be {'shoulder_pan.pos': 1.4575186633487363, 
-        #            'shoulder_lift.pos': -99.75619666802113, 
-        #            'elbow_flex.pos': 97.13261648745518, 
-        #            'wrist_flex.pos': 72.54736842105262, 
-        #            'wrist_roll.pos': -3.003663003663007, 
-        #            'gripper.pos': 3.2860824742268044, 
+        # should be {'shoulder_pan.pos': 1.4575186633487363, 'shoulder_lift.pos': -99.75619666802113, 'elbow_flex.pos': 97.13261648745518, 'wrist_flex.pos': 72.54736842105262, 'wrist_roll.pos': -3.003663003663007, 'gripper.pos': 3.2860824742268044, 
         rest_position = {
             "shoulder_pan.pos":  1.4,    # replace with your actual rest values
             "shoulder_lift.pos": -99.0,
